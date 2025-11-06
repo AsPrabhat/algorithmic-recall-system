@@ -3,8 +3,13 @@ import './ProblemCard.css'
 /**
  * ProblemCard Component
  * Displays a single problem with all its details in a card format
+ * 
+ * Props:
+ * - problem: Object - The problem data to display
+ * - onEdit: Function - Callback when edit button is clicked
+ * - onDelete: Function - Callback when delete button is clicked
  */
-function ProblemCard({ problem }) {
+function ProblemCard({ problem, onEdit, onDelete }) {
   // Format dates for display
   const formatDate = (dateString) => {
     if (!dateString) return 'Not set'
@@ -89,10 +94,18 @@ function ProblemCard({ problem }) {
 
       {/* Action buttons placeholder for future phases */}
       <div className="card-actions">
-        <button className="btn-secondary" title="Edit problem">
+        <button 
+          className="btn-secondary" 
+          title="Edit problem"
+          onClick={() => onEdit && onEdit(problem)}
+        >
           ✏️ Edit
         </button>
-        <button className="btn-danger" title="Delete problem">
+        <button 
+          className="btn-danger" 
+          title="Delete problem"
+          onClick={() => onDelete && onDelete(problem)}
+        >
           🗑️ Delete
         </button>
       </div>

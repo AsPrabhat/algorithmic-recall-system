@@ -7,15 +7,21 @@ import './ProblemList.css'
  * ProblemList Component
  * Fetches and displays all problems from the backend
  * Handles loading, error, and empty states
+ * 
+ * Props:
+ * - onEdit: Function - Callback when edit is requested
+ * - onDelete: Function - Callback when delete is requested
+ * - onAddClick: Function - Callback when add button is clicked
+ * - refreshTrigger: Number - When changed, triggers a refresh
  */
-function ProblemList() {
+function ProblemList({ onEdit, onDelete, onAddClick, refreshTrigger }) {
   const [problems, setProblems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     fetchProblems()
-  }, [])
+  }, [refreshTrigger]) // Re-fetch when refreshTrigger changes
 
   const fetchProblems = async () => {
     try {
@@ -99,10 +105,10 @@ function ProblemList() {
               <li>Monitor your progress over time</li>
             </ul>
           </div>
-          <button className="add-button" disabled>
+          <button className="add-button" onClick={onAddClick}>
             ➕ Add Your First Problem
           </button>
-          <p className="coming-soon">(Add functionality coming in Phase 5)</p>
+          <p className="coming-soon">(Now available!)</p>
         </div>
       </div>
     )
@@ -113,7 +119,12 @@ function ProblemList() {
     <div className="problem-list-container">
       <div className="list-header">
         <h2>📚 Your Problems</h2>
-        <span className="problem-count">{problems.length} {problems.length === 1 ? 'problem' : 'problems'}</span>
+        <div className="header-actions">
+          <span className="problem-count">{problems.length} {problems.length === 1 ? 'problem' : 'problems'}</span>
+          <button className="add-button-header" onClick={onAddClick}>
+            ➕ Add Problem
+          </button>
+        </div>
       </div>
       
       {/* Filter/Sort controls placeholder */}
@@ -137,7 +148,12 @@ function ProblemList() {
       {/* Problems Grid */}
       <div className="problems-grid">
         {problems.map((problem) => (
-          <ProblemCard key={problem.id} problem={problem} />
+          <ProblemCard 
+            key={problem.id} 
+            problem={problem}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         ))}
       </div>
     </div>
