@@ -18,6 +18,12 @@ function ProblemList({ onEdit, onDelete, onAddClick, refreshTrigger }) {
   const [problems, setProblems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  
+  // Filter and search state
+  const [searchQuery, setSearchQuery] = useState('')
+  const [difficultyFilter, setDifficultyFilter] = useState('All')
+  const [platformFilter, setPlatformFilter] = useState('All')
+  const [sortBy, setSortBy] = useState('newest')
 
   useEffect(() => {
     fetchProblems()
@@ -41,6 +47,88 @@ function ProblemList({ onEdit, onDelete, onAddClick, refreshTrigger }) {
   const handleRetry = () => {
     fetchProblems()
   }
+
+  // Get unique platforms from problems
+  const getUniquePlatforms = () => {
+    const platforms = problems.map(p => p.platform).filter(Boolean)
+    return ['All', ...new Set(platforms)]
+  }
+
+  // Filter and sort problems
+  const getFilteredAndSortedProblems = () => {
+    let filtered = [...problems]
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter(problem => 
+        problem.title?.toLowerCase().includes(query) ||
+        problem.description?.toLowerCase().includes(query) ||
+        problem.platform?.toLowerCase().includes(query) ||
+        problem.notes?.toLowerCase().includes(query)
+      )
+    }
+
+    // Apply difficulty filter
+    if (difficultyFilter !== 'All') {
+      filtered = filtered.filter(problem => 
+        problem.difficulty?.toLowerCase() === difficultyFilter.toLowerCase()
+      )
+    }
+
+    // Apply platform filter
+    if (platformFilter !== 'All') {
+      filtered = filtered.filter(problem => 
+        problem.platform === platformFilter
+      )
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return b.id - a.id // Assuming higher ID = newer
+        case 'oldest':
+          return a.id - b.id
+        case 'title-asc':
+          return (a.title || '').localeCompare(b.title || '')
+        case 'title-desc':
+          return (b.title || '').localeCompare(a.title || '')
+        case 'difficulty':
+          const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 }
+          return (difficultyOrder[a.difficulty] || 0) - (difficultyOrder[b.difficulty] || 0)
+        case 'review-count':
+          return (b.reviewCount || 0) - (a.reviewCount || 0)
+        case 'next-review':
+          const dateA = a.nextReview ? new Date(a.nextReview) : new Date(9999, 11, 31)
+          const dateB = b.nextReview ? new Date(b.nextReview) : new Date(9999, 11, 31)
+          return dateA - dateB
+        default:
+          return 0
+      }
+    })
+
+    return filtered
+  }
+
+  // Clear all filters
+  const handleClearFilters = () => {
+    setSearchQuery('')
+    setDifficultyFilter('All')
+    setPlatformFilter('All')
+    setSortBy('newest')
+  }
+
+  // Check if any filters are active
+  const hasActiveFilters = () => {
+    return searchQuery.trim() !== '' || 
+           difficultyFilter !== 'All' || 
+           platformFilter !== 'All' ||
+           sortBy !== 'newest'
+  }
+
+  const filteredProblems = getFilteredAndSortedProblems()
+  const uniquePlatforms = getUniquePlatforms()
 
   // Loading State
   if (loading) {
@@ -120,42 +208,131 @@ function ProblemList({ onEdit, onDelete, onAddClick, refreshTrigger }) {
       <div className="list-header">
         <h2>📚 Your Problems</h2>
         <div className="header-actions">
-          <span className="problem-count">{problems.length} {problems.length === 1 ? 'problem' : 'problems'}</span>
+          <span className="problem-count">
+            {filteredProblems.length === problems.length 
+              ? `${problems.length} ${problems.length === 1 ? 'problem' : 'problems'}`
+              : `${filteredProblems.length} of ${problems.length} problems`
+            }
+          </span>
           <button className="add-button-header" onClick={onAddClick}>
             ➕ Add Problem
           </button>
         </div>
       </div>
       
-      {/* Filter/Sort controls placeholder */}
+      {/* Filter/Sort controls */}
       <div className="list-controls">
+        {/* Search Box */}
         <div className="search-box">
           <input 
             type="text" 
             placeholder="🔍 Search problems..." 
-            disabled
-            title="Search coming in Phase 6"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
           />
         </div>
-        <div className="filter-buttons">
-          <button className="filter-btn" disabled>All</button>
-          <button className="filter-btn" disabled>Easy</button>
-          <button className="filter-btn" disabled>Medium</button>
-          <button className="filter-btn" disabled>Hard</button>
+
+        {/* Difficulty Filter Buttons */}
+        <div className="filter-section">
+          <span className="filter-label">Difficulty:</span>
+          <div className="filter-buttons">
+            <button 
+              className={`filter-btn ${difficultyFilter === 'All' ? 'active' : ''}`}
+              onClick={() => setDifficultyFilter('All')}
+            >
+              All
+            </button>
+            <button 
+              className={`filter-btn filter-easy ${difficultyFilter === 'Easy' ? 'active' : ''}`}
+              onClick={() => setDifficultyFilter('Easy')}
+            >
+              Easy
+            </button>
+            <button 
+              className={`filter-btn filter-medium ${difficultyFilter === 'Medium' ? 'active' : ''}`}
+              onClick={() => setDifficultyFilter('Medium')}
+            >
+              Medium
+            </button>
+            <button 
+              className={`filter-btn filter-hard ${difficultyFilter === 'Hard' ? 'active' : ''}`}
+              onClick={() => setDifficultyFilter('Hard')}
+            >
+              Hard
+            </button>
+          </div>
         </div>
+
+        {/* Platform Filter */}
+        {uniquePlatforms.length > 1 && (
+          <div className="filter-section">
+            <span className="filter-label">Platform:</span>
+            <div className="filter-buttons">
+              {uniquePlatforms.map(platform => (
+                <button 
+                  key={platform}
+                  className={`filter-btn ${platformFilter === platform ? 'active' : ''}`}
+                  onClick={() => setPlatformFilter(platform)}
+                >
+                  {platform}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sort Dropdown */}
+        <div className="filter-section">
+          <span className="filter-label">Sort by:</span>
+          <select 
+            value={sortBy} 
+            onChange={(e) => setSortBy(e.target.value)}
+            className="sort-select"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="title-desc">Title (Z-A)</option>
+            <option value="difficulty">Difficulty</option>
+            <option value="review-count">Most Reviewed</option>
+            <option value="next-review">Next Review</option>
+          </select>
+        </div>
+
+        {/* Clear Filters Button */}
+        {hasActiveFilters() && (
+          <button className="clear-filters-btn" onClick={handleClearFilters}>
+            ✕ Clear Filters
+          </button>
+        )}
       </div>
 
+      {/* No results message */}
+      {filteredProblems.length === 0 && problems.length > 0 && (
+        <div className="no-results">
+          <div className="no-results-icon">🔍</div>
+          <h3>No problems match your filters</h3>
+          <p>Try adjusting your search or filters</p>
+          <button className="clear-filters-btn" onClick={handleClearFilters}>
+            Clear All Filters
+          </button>
+        </div>
+      )}
+
       {/* Problems Grid */}
-      <div className="problems-grid">
-        {problems.map((problem) => (
-          <ProblemCard 
-            key={problem.id} 
-            problem={problem}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
-        ))}
-      </div>
+      {filteredProblems.length > 0 && (
+        <div className="problems-grid">
+          {filteredProblems.map((problem) => (
+            <ProblemCard 
+              key={problem.id} 
+              problem={problem}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

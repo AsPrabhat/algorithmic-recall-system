@@ -175,34 +175,34 @@ function App() {
 
         {/* Phase Progress */}
         <section className="info-section">
-          <h3>🎯 Phase 5: Add/Edit Problem Form Complete</h3>
+          <h3>🎯 Phase 6: Search & Filter Complete</h3>
           <div className="phase-grid">
             <div className="phase-item completed">
               <span className="phase-icon">✅</span>
-              <span>ProblemForm Component</span>
+              <span>Search by Title/Description</span>
             </div>
             <div className="phase-item completed">
               <span className="phase-icon">✅</span>
-              <span>Form Validation</span>
+              <span>Difficulty Filters</span>
             </div>
             <div className="phase-item completed">
               <span className="phase-icon">✅</span>
-              <span>Create/Edit Modes</span>
+              <span>Platform Filters</span>
             </div>
             <div className="phase-item completed">
               <span className="phase-icon">✅</span>
-              <span>Delete Functionality</span>
+              <span>Sort Options (7 types)</span>
             </div>
             <div className="phase-item completed">
               <span className="phase-icon">✅</span>
-              <span>Toast Notifications</span>
+              <span>Combined Filters</span>
             </div>
             <div className="phase-item completed">
               <span className="phase-icon">✅</span>
-              <span>Confirmation Dialogs</span>
+              <span>Clear Filters Button</span>
             </div>
           </div>
-          <p className="next-phase">Next: Phase 6 - Search & Filter</p>
+          <p className="next-phase">Next: Phase 7 - Spaced Repetition Algorithm</p>
         </section>
       </main>
     </div>
