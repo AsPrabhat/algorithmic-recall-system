@@ -1,6 +1,6 @@
 /* App Container */
 .app {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -8,8 +8,8 @@
 /* Header */
 .app-header {
   text-align: center;
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
   border-bottom: 2px solid #646cff;
 }
 
@@ -32,126 +32,101 @@
   gap: 2rem;
 }
 
-/* Sections */
-section {
-  background-color: #1a1a1a;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #333;
-}
-
-section h2 {
-  color: #646cff;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-section h3 {
-  color: #646cff;
-  margin-bottom: 0.75rem;
-  font-size: 1.2rem;
-}
-
-/* Backend Status */
+/* Backend Status - Compact Version */
 .status-section {
   text-align: center;
+  padding: 0.75rem;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #333;
+  transition: opacity 0.5s ease;
 }
 
 .status-success {
   color: #4caf50;
-  font-weight: bold;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
 }
 
 .status-error {
   color: #f44336;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.error-message {
-  color: #ff9800;
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
-}
-
-/* Problems Section */
-.no-data {
-  color: #888;
-  font-style: italic;
-  text-align: center;
-  padding: 2rem;
-}
-
-.problems-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.problem-card {
-  background-color: #242424;
-  padding: 1.25rem;
-  border-radius: 8px;
-  border: 1px solid #444;
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.problem-card:hover {
-  transform: translateY(-2px);
-  border-color: #646cff;
-}
-
-.problem-card h3 {
-  color: #fff;
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-}
-
-.problem-card p {
-  color: #ccc;
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
-}
-
-.problem-card .notes {
-  color: #888;
-  font-size: 0.85rem;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #444;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
 }
 
 /* Info Section */
 .info-section {
   background-color: #1e2a3a;
+  border: 1px solid #646cff;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.info-section h3 {
+  color: #646cff;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+/* Phase Grid */
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.phase-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background-color: #242424;
+  border-radius: 8px;
+  border: 1px solid #333;
+  transition: all 0.2s;
+}
+
+.phase-item.completed {
+  border-color: #4caf50;
+}
+
+.phase-item:hover {
+  transform: translateY(-2px);
   border-color: #646cff;
 }
 
-.info-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
+.phase-icon {
+  font-size: 1.25rem;
 }
 
-.info-section li {
-  padding: 0.5rem 0;
+.phase-item span:last-child {
   color: #ccc;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .next-phase {
   margin-top: 1.5rem;
   padding: 1rem;
   background-color: #2a3f5f;
-  border-radius: 4px;
+  border-radius: 8px;
   color: #61dafb;
   font-weight: bold;
   text-align: center;
+  font-size: 1.05rem;
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .app {
+    max-width: 1000px;
+  }
+}
+
 @media (max-width: 768px) {
   .app {
     padding: 1rem;
@@ -161,7 +136,33 @@ section h3 {
     font-size: 2rem;
   }
 
-  .problems-list {
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .phase-grid {
     grid-template-columns: 1fr;
+  }
+
+  .info-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 0.75rem;
+  }
+
+  .app-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
   }
 }
