@@ -1,0 +1,167 @@
+/* App Container */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #646cff;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #646cff;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+/* Main Content */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Sections */
+section {
+  background-color: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+section h2 {
+  color: #646cff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+section h3 {
+  color: #646cff;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+/* Backend Status */
+.status-section {
+  text-align: center;
+}
+
+.status-success {
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.status-error {
+  color: #f44336;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.error-message {
+  color: #ff9800;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Problems Section */
+.no-data {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+.problems-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.problem-card {
+  background-color: #242424;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.problem-card:hover {
+  transform: translateY(-2px);
+  border-color: #646cff;
+}
+
+.problem-card h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.problem-card p {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.problem-card .notes {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #444;
+}
+
+/* Info Section */
+.info-section {
+  background-color: #1e2a3a;
+  border-color: #646cff;
+}
+
+.info-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.info-section li {
+  padding: 0.5rem 0;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.next-phase {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #2a3f5f;
+  border-radius: 4px;
+  color: #61dafb;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .problems-list {
+    grid-template-columns: 1fr;
+  }
+}
